@@ -1,0 +1,441 @@
+  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        #crosshair::before,
+        #crosshair::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 0, 0, 0.9);
+            box-shadow: 0 0 3px rgba(255, 0, 0, 0.8);
+        }
+
+        #crosshair::before {
+            width: 3px;
+            height: 24px;
+            left: 10.5px;
+        }
+
+        #crosshair::after {
+            width: 24px;
+            height: 3px;
+            top: 10.5px;
+        }
+
+        #scope-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 9;
+            pointer-events: none;
+        }
+
+        #scope-overlay.active {
+            display: block;
+        }
+
+        #scope-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 200px, rgba(0, 0, 0, 0.98) 200px);
+        }
+
+        #scope-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            border: 4px solid rgba(50, 50, 50, 0.8);
+        }
+
+        #scope-crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #scope-crosshair::before,
+        #scope-crosshair::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 0, 0, 0.9);
+        }
+
+        #scope-crosshair::before {
+            width: 2px;
+            height: 300px;
+            left: -1px;
+            top: -150px;
+        }
+
+        #scope-crosshair::after {
+            width: 300px;
+            height: 2px;
+            left: -150px;
+            top: -1px;
+        }
+
+        .kill-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 72px;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 
+                0 0 10px #ff0000,
+                0 0 20px #ff0000,
+                0 0 30px #ff0000,
+                3px 3px 10px #000;
+            z-index: 1000;
+            animation: killPop 0.8s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes killPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1) translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        #camera-toggle {
+            position: absolute;
+            top: 80px;
+            left: 10px;
+            padding: 10px 20px;
+            background: rgba(139, 0, 0, 0.8);
+            color: white;
+            border: 2px solid #FF0000;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 10;
+            display: none;
+        }
+
+        #camera-toggle.active {
+            display: block;
+        }
+
+        #camera-toggle:hover {
+            background: rgba(255, 0, 0, 0.9);
+        }
+
+        #menu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(139, 0, 0, 0.8), rgba(0, 0, 0, 0.95));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            color: white;
+            text-align: center;
+        }
+
+        #menu h1 {
+            font-size: 3em;
+            margin-bottom: 6px;
+            text-shadow: 4px 4px 0px #8B0000;
+            color: #FF0000;
+        }
+
+        
+        #minimap {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 220px;
+            height: 160px;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid rgba(255,0,0,0.8);
+            z-index: 110;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        #minimap .title {
+            font-weight: bold;
+            text-align: center;
+            font-size: 13px;
+            color: #FFD700;
+        }
+
+        #minimap canvas {
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        #minimap .controls {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+        }
+
+        #minimap .controls button {
+            flex: 1;
+            padding: 4px;
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        #menu button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: #8B0000;
+            color: white;
+            border: 3px solid #FF0000;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        #menu button:hover {
+            background: #FF0000;
+            transform: scale(1.05);
+        }
+
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 14px;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            display: none;
+        }
+
+        #hud.active {
+            display: block;
+        }
+
+        #weapon-info {
+            position: absolute;
+            bottom: 120px;
+            right: 20px;
+            color: white;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            display: none;
+            font-size: 18px;
+            text-align: right;
+        }
+
+        #weapon-info.active {
+            display: block;
+        }
+
+        .weapon-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #FF0000;
+        }
+
+        .fire-mode {
+            font-size: 14px;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .ammo-count {
+            font-size: 28px;
+            color: #FFD700;
+        }
+
+        #sprint-indicator {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            color: #00ff00;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            display: none;
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        #sprint-indicator.active {
+            display: block;
+        }
+
+        #stats {
+            position: absolute;
+            bottom: 80px;
+            left: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 10;
+        }
+
+        #stats.active {
+            display: flex;
+        }
+
+        .stat-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-icon {
+            font-size: 20px;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+        }
+
+        .hearts { color: #ff0000; }
+        .stamina { color: #00ff00; }
+        
+        #stealth-indicator {
+            display: none;
+            color: #00ff00;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff00;
+        }
+        
+        #stealth-indicator.active {
+            display: block;
+        }
+        
+        #stealth-toggle {
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 3px;
+            background: rgba(0,0,0,0.3);
+        }
+        
+        #stealth-toggle:hover {
+            background: rgba(0,0,0,0.5);
+        }
+
+        .stat-container {
+            display: flex;
+            gap: 2px;
+            font-size: 20px;
+        }
+
+        #hotbar {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            gap: 5px;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 4px;
+        }
+
+        #hotbar.active {
+            display: flex;
+        }
+
+        .hotbar-slot {
+            width: 70px;
+            height: 80px;
+            background: rgba(139, 139, 139, 0.8);
+            border: 2px solid #373737;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .hotbar-slot.active {
+            border: 3px solid #FF0000;
+            background: rgba(180, 180, 180, 0.9);
+            transform: scale(1.1);
+        }
+
+        .hotbar-slot i {
+            font-size: 28px;
+        }
+
+        .hotbar-slot .slot-label {
+            font-size: 9px;
+            color: white;
+            margin-top: 3px;
+            text-shadow: 1px 1px 0px black;
+        }
+
+        .hotbar-slot .slot-number {
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .instructions {
+            font-size: 0.8em;
+            margin-top: 20px;
+            line-height: 1.8;
+        }
