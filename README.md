@@ -87,39 +87,17 @@ Copy code
 
 ```bash
 # Clone this repository
-git clone https://github.com/<your-username>/brutalian.git
+git clone https://github.com/DDharm007/Brutalian-Small-Brutal-web-game-for-PC.git
 
 # Go to the project directory
-cd brutalian
+cd Brutalian-Small-Brutal-web-game-for-PC
 
 # Run locally (for static build)
 npx serve
 If you have a build setup (e.g., using npm):
+```
+<h1 align="center">
+  Modify this with your style and Play Free..............
+</h1>
 
-bash
-Copy code
-npm install
-npm run dev
-🖼️ Animated Assets
-Organize all animated media inside the assets/ folder:
 
-css
-Copy code
-📂 assets/
- ┣ 📜 hero.gif        # Main header animation
- ┣ 📜 demo.gif        # Gameplay demo
- ┣ 📜 controls.gif    # Controls animation (optional)
- ┗ 📜 banner.gif      # Loading/intro animation (optional)
-🎞️ How to Create GIF Animations
-bash
-Copy code
-# 1️⃣ Record your gameplay using OBS Studio (save as demo.mp4)
-
-# 2️⃣ Generate optimized palette
-ffmpeg -i demo.mp4 -vf fps=15,scale=800:-1:flags=lanczos,palettegen palette.png
-
-# 3️⃣ Convert MP4 to GIF
-ffmpeg -i demo.mp4 -i palette.png -filter_complex "fps=15,scale=800:-1:flags=lanczos[x];[x][1:v]paletteuse" demo.gif
-
-# 4️⃣ (Optional) Optimize GIF size
-gifsicle -O3 --colors 128 demo.gif -o demo.optimized.gif
